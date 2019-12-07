@@ -4,10 +4,9 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ServerThread extends Thread {
@@ -20,33 +19,28 @@ public class ServerThread extends Thread {
 
     @Override
     public void run() {
-        InputStream in = null;
-        try {
-            in = socket.getInputStream();
-            InputStreamReader inr = new InputStreamReader(in);
-            BufferedReader br = new BufferedReader(inr);
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             BufferedReader fileReader = new BufferedReader(new FileReader("./Response"));
+             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
 
-            OutputStream out = socket.getOutputStream();
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out));
+            PrintWriter pw = new PrintWriter(bw, true);
 
-            BufferedReader fileReader = new BufferedReader(new FileReader("./Response"));
-
-            char[] buf = new char[100];
-
+            String messageClient = "";
             //диалог клиента-сервера
-            while (inr.read(buf,0, 100) != -1) {//вопрос/сообщение от клиента
-                String str  = new String(buf);
-                System.out.println(str);
+            while ((messageClient = br.readLine()) != null) {//вопрос/сообщение от клиента
+                System.out.println(String.format("messageClient - %s", messageClient));
+
                 //север что-то выполнил
-                String str2 = "";
-                while ((str2 = fileReader.readLine()) != null) {
-                    bw.write(str2);
-                    bw.flush();//ответ сервера клиенту
+
+                String serverMessage = "";
+                if ((serverMessage = fileReader.readLine()) != null) {
+                    pw.println(serverMessage);
                 }
-                //socket.shutdownOutput();
             }
         } catch (IOException e) {
             System.err.println(e.getMessage());
+        } finally {
+            System.out.println("Соединение разорвано");
         }
     }
 }

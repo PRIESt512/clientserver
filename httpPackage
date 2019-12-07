@@ -1,3 +1,2 @@
-POST / HTTP/1.0 Hello, Dear Server \n
-\n
-GET / HTTP/1.0 Bye, Bye\n
+POST / HTTP/1.0 Hello, Dear Server
+GET / HTTP/1.0 Bye, Bye
