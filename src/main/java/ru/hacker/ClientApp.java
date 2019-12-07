@@ -28,7 +28,7 @@ public class ClientApp {
             PrintWriter pw = new PrintWriter(bw, true);
 
             String clientMessage = "";
-            while ((clientMessage = fileReader.readLine()) != null) {//запрос/сообщение клиенту
+            while ((clientMessage = fileReader.readLine()) != null) {//запрос/сообщение серверу
 
                 pw.println(clientMessage);
 
@@ -36,7 +36,7 @@ public class ClientApp {
 
                 String messageServer = "";
                 if ((messageServer = br.readLine()) != null) {
-                    System.out.println(String.format("messageServer - %s", messageServer));
+                    System.out.println(String.format("messageServer - %s", messageServer));//ответ сервера
                 } else break;
             }
         } catch (UnknownHostException | FileNotFoundException e) {

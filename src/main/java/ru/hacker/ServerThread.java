@@ -34,7 +34,7 @@ public class ServerThread extends Thread {
 
                 String serverMessage = "";
                 if ((serverMessage = fileReader.readLine()) != null) {
-                    pw.println(serverMessage);
+                    pw.println(serverMessage);//ответ клиенту
                 }
             }
         } catch (IOException e) {
