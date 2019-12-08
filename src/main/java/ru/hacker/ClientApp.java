@@ -1,5 +1,6 @@
 package ru.hacker;
 
+import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,6 +14,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class ClientApp {
+
+    private int t = 0;
 
     public static void main(String[] args) {
 
